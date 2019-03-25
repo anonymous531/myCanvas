@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="./style.css">
+    <script src='//at.alicdn.com/t/font_1106949_gljizp1n69.js'></script>
+</head>
+
+<body>
+    <canvas id='canvas' width=300 height=300>   </canvas>
+    <div class="action">
+        <svg class="icon clear" id='clear'>
+            <use xlink:href="#icon-clear"></use>
+        </svg>
+        <svg class="icon eraser" id='eraser'>
+            <use xlink:href="#icon-eraser"></use>
+        </svg>
+
+        <svg class="icon pencil" id='pencil'>
+            <use xlink:href="#icon-pencil"></use>
+        </svg>
+    </div>
+    <div class="eraserSize">
+        <div class="big" id="big"></div>
+        <div class="small" id="small"></div>
+    </div>
+
+    <div class="colors">
+        <div class="color" id="red"></div>
+        <div class="color" id="orange"></div>
+        <div class="color" id="yellow"></div>
+        <div class="color" id="green"></div>
+        <div class="color" id="blue"></div>
+        <div class="color" id="purple"></div>
+        <div class="color" id="black"></div>
+        <div class="color" id="grey"></div>
+    </div>
+
+    <div class="lineWidth">
+        <div class="line" id="thick"></div>
+        <div class="line" id="middle"></div>
+        <div class="line" id="thin"></div>
+    </div>
+
+    <div class="save">
+        <svg class="icon" id='save'>
+            <use xlink:href="#icon-save"></use>
+        </svg>
+    </div>
+
+    <script src='./script.js'></script>
+    
+</body>
+
+</html>
