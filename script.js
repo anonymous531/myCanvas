@@ -1,8 +1,7 @@
 window.onload = function () {
     var canvas = document.getElementById('canvas');
     var context = canvas.getContext('2d');
-    var pageWidth = document.documentElement.clientWidth
-    var pageHeight = document.documentElement.clientHeight
+   
     var eraser = document.getElementById('eraser')
     var pencil = this.document.getElementById('pencil')
     var using = false
@@ -17,27 +16,60 @@ window.onload = function () {
     var clear = document.getElementById('clear')
     var eraserBig = document.getElementById('big');
     var eraserSmall = document.getElementById('small')
-    var eraserWidth = 20
-    var eraserHeight = 20
+    var clearRadius = 10
     var save = document.getElementById('save')
     
+    /*设置canvas大小，包括监听window改变大小*/
+    autoSetCanvasSize()
 
-    canvas.width = pageWidth
-    canvas.height = pageHeight
-
-    document.onmousedown = function (e) {
-        x = e.clientX
-        y = e.clientY
+    formatCanvas()
+    
+    canvas.ontouchstart = function(e){
+        var x = e.touches[0].clientX
+        var y = e.touches[0].clientY
         prePoint = { 'x': x, 'y': y }
         using = true
         if(eraserEnabled){
-            context.clearRect(x,y,eraserWidth,eraserHeight)
+            clearCircle(x,y,clearRadius)
         }else{
             drawCircle(x,y,radius)
         }
     }
- 
-    document.onmousemove = function (e) {
+    canvas.ontouchmove = function(e){
+        if (using) {
+            var x = e.touches[0].clientX
+            var y = e.touches[0].clientY
+            var newPoint = {'x':x,'y':y}
+            x1 = prePoint.x
+            y1 = prePoint.y
+            x2 = newPoint.x
+            y2 = newPoint.y
+            if(eraserEnabled){
+                clearCircle(x,y,clearRadius) 
+            }else{
+                drawCircle(x,y,radius)
+                drawLine(x1,y1,x2,y2)
+            }
+            prePoint = newPoint
+        }
+    }
+    canvas.ontouchend = function(){
+        using = false
+    }
+    
+    /*mouse事件*/
+    canvas.onmousedown = function (e) {
+        var x = e.clientX
+        var y = e.clientY
+        prePoint = { 'x': x, 'y': y }
+        using = true
+        if(eraserEnabled){
+            clearCircle(x,y,clearRadius)
+        }else{
+            drawCircle(x,y,radius)
+        }
+    }
+    canvas.onmousemove = function (e) {
         if (using) {
             var x = e.clientX
             var y = e.clientY
@@ -47,7 +79,7 @@ window.onload = function () {
             x2 = newPoint.x
             y2 = newPoint.y
             if(eraserEnabled){
-                context.clearRect(x,y,eraserWidth,eraserHeight) 
+                clearCircle(x,y,clearRadius) 
             }else{
                 drawCircle(x,y,radius)
                 drawLine(x1,y1,x2,y2)
@@ -55,67 +87,99 @@ window.onload = function () {
             prePoint = newPoint
         }
     }
-    document.onmouseup = function () {
+    canvas.onmouseup = function () {
         using = false
     }
-    eraser.onclick = function(){
-        eraserEnabled = true;
-        eraser.classList.add('active')
-        pencil.classList.remove('active')
-        clear.classList.remove('active')
-    }
-    eraserBig.onclick = function(){
-        eraserWidth = 20
-        eraserHeight = 20
-        console.log(eraserWidth)
-        save.classList.remove('active')
-    }
-    eraserSmall.onclick = function(){
-        eraserWidth = 10
-        eraserHeight = 10
-        console.log(eraserWidth)
-    }
-    pencil.onclick = function(){
-        eraserEnabled = false
-        pencil.classList.add('active')
-        eraser.classList.remove('active')
-        clear.classList.remove('active')
-        save.classList.remove('active')
-    }
-    save.onclick = function(){
-        save.classList.add('active')
-        pencil.classList.remove('active')
-        eraser.classList.remove('active')
-        clear.classList.remove('active')
-        var url = canvas.toDataURL("image/png");
-        var a = document.createElement("a");
-        document.body.appendChild(a)
-        a.href = url;
-        a.download = '我的画'
-        a.target = '_blank'
-        a.click()
-    }
-    clear.onclick = function(){
-        context.clearRect(0,0,canvas.width,canvas.height)
-    }
-    for(var i=0;i<color.length;i++){
-        color[i].onclick = function(){
-            paintingColor = this.id;
-        }
-    }
 
-    for(var i=0;i<line.length;i++){
-        line[i].index = i;
-    }
-    for(var i=0;i<line.length;i++){
-        line[i].onclick = function(e){
-            lineWidth = arrLine[this.index];
-            radius = arrLine[this.index]/2
-        }
-    }
+    /*设置*/
+    useEraser()
+    usePencil()
+    savePic() 
+    clearPic()
 
+   
     /*下面是功能函数*/
-
+    function setCanvasSize(){
+        var pageWidth = document.documentElement.clientWidth
+        var pageHeight = document.documentElement.clientHeight
+        canvas.width = pageWidth
+        canvas.height = pageHeight
+    }
+    function autoSetCanvasSize(){
+        setCanvasSize()
+        window.onresize = function(){
+            setCanvasSize()
+        }
+    }
+    function formatCanvas(){
+        context.fillStyle = '#fafafa';
+        context.fillRect(0,0,canvas.width,canvas.height); 
+    }
+    function useEraser(){
+        eraser.onclick = function(){
+            eraserEnabled = true;
+            eraser.classList.add('active')
+            pencil.classList.remove('active')
+            clear.classList.remove('active')
+        }
+        eraserBig.onclick = function(){
+            clearRadius = 10
+        }
+        eraserSmall.onclick = function(){
+            clearRadius = 5
+        }
+    }
+   
+    function usePencil(){
+        pencil.onclick = function(){
+            eraserEnabled = false
+            pencil.classList.add('active')
+            eraser.classList.remove('active')
+            clear.classList.remove('active')
+            save.classList.remove('active')
+        }
+        setLineWidth()
+        setColor()
+   }
+   function savePic(){
+        save.onclick = function(){
+            save.classList.add('active')
+            pencil.classList.remove('active')
+            eraser.classList.remove('active')
+            clear.classList.remove('active')
+            var url = canvas.toDataURL("image/png");
+            var a = document.createElement("a");
+            document.body.appendChild(a)
+            a.href = url;
+            a.download = '我的画'
+            a.target = '_blank'
+            a.click()
+        }
+    }
+    function clearPic(){
+        clear.onclick = function(){
+            context.clearRect(0,0,canvas.width,canvas.height)
+            formatCanvas()
+        }
+    }
+    function setColor(){
+        for(var i=0;i<color.length;i++){
+            color[i].onclick = function(){
+                paintingColor = this.id;
+            }
+        }
+    }
+    function setLineWidth(){
+        for(var i=0;i<line.length;i++){
+            line[i].index = i;
+        }
+        for(var i=0;i<line.length;i++){
+            line[i].onclick = function(){
+                lineWidth = arrLine[this.index];
+                radius = arrLine[this.index]/2
+            }
+        }
+    }
     function drawCircle(x,y,radius){
         context.beginPath();
         context.fillStyle = paintingColor;
@@ -130,6 +194,12 @@ window.onload = function () {
         context.lineTo(x2,y2);
         context.stroke();
         context.closePath();
+    }
+    function clearCircle(x,y,clearRadius){
+        context.beginPath();
+        context.fillStyle = '#fafafa';
+        context.arc(x, y, clearRadius, 0, Math.PI * 2);
+        context.fill();
     }
 }
 

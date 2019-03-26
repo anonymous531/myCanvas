@@ -1,5 +1,8 @@
 *{margin:0;padding:0}
-
+body{
+   overflow: hidden;
+   background-color: #fafafa;
+}
 .icon {
     width: 1em; height: 1em;
     vertical-align: -0.15em;
@@ -8,15 +11,14 @@
  }
 
 #canvas{
-    background-color: pink;
-    
+    background-color: #fafafa;
 }
 .action{
     position:fixed;
     top:20px;
-    left:120px;
+    left:10%;
     border-radius: 40%;
-    background-color: pink;
+    background-color: #fafafa;
 }
 .action .clear{
     width:26px;
@@ -45,27 +47,52 @@
     fill:#558ff2;
     transform: scale(1.2);
 }
-.eraserSize{
-    position:fixed;
-    left:350px;
-    top:20px;   
-    background-color: pink;
-    padding:10px;
+
+@media (max-width:450px) {
+    .eraserSize{
+        position:fixed;
+        left:30px;
+        top:220px;   
+        background-color: #fafafa;
+    }
+    .eraserSize .big{
+        width:20px;
+        height:20px;
+        border:2px solid #444;
+        border-radius: 50%;
+        margin-bottom: 10px
+    }
+    .eraserSize .small{
+        width:10px;
+        height:10px;
+        border:2px solid #444;
+        border-radius: 50%;
+        margin-left: 4px;
+    }
 }
-.eraserSize .big{
-    width:20px;
-    height:20px;
-    border:2px solid #444;
-    border-radius: 50%;
-    display:inline-block;
-    margin-right:20px;
-}
-.eraserSize .small{
-    width:10px;
-    height:10px;
-    border:2px solid #444;
-    border-radius: 50%;
-    display:inline-block
+@media (min-width:451px){
+    .eraserSize{
+        position:fixed;
+        left:350px;
+        top:20px;   
+        background-color: #fafafa;
+        padding:10px;
+    }
+    .eraserSize .big{
+        width:20px;
+        height:20px;
+        border:2px solid #444;
+        border-radius: 50%;
+        display:inline-block;
+        margin-right:20px;
+    }
+    .eraserSize .small{
+        width:10px;
+        height:10px;
+        border:2px solid #444;
+        border-radius: 50%;
+        display:inline-block
+    }
 }
 
 .colors{
@@ -73,8 +100,7 @@
     position:fixed;
     top:80px;
     left:20px;
-    background-color: pink;
-    padding:10px;
+    background-color: #fafafa;
 }
 .color{
     width:18px;
@@ -106,36 +132,66 @@
 .colors #grey{
     background-color: grey;
 }
-.lineWidth{
-    position:fixed;
-    top:20px;
-    left:450px;
-    padding:20px 10px 10px 10px;
-    width:200px;
-    background-color: pink;
-    display:flex;
-    justify-content:space-around;
+
+@media(max-width:450px){
+    .lineWidth{
+        position:fixed;
+        top:300px;
+        left:30px;
+        background-color: #fafafa;
+    }
+    .lineWidth #thick{
+        width:30px;
+        height:0;
+        border-top:12px solid #333;
+        margin-bottom: 15px;
+    }
+    .lineWidth #middle{
+        width:30px;
+        height:0;
+        border-top:8px solid #333;
+        margin-bottom: 15px;
+    }
+    .lineWidth #thin{
+        width:30px;
+        height:0;
+        border-top:4px solid #333;
+        margin-bottom: 15px;
+    }
 }
-.lineWidth #thick{
-    width:35px;
-    height:0;
-    border-top:12px solid #333; 
+@media(min-width:451px){
+    .lineWidth{
+        position:fixed;
+        top:20px;
+        left:450px;
+        padding:20px 10px 10px 10px;
+        width:200px;
+        background-color: #fafafa;
+        display:flex;
+        justify-content:space-around;
+    }
+    .lineWidth #thick{
+        width:35px;
+        height:0;
+        border-top:12px solid #333; 
+    }
+    .lineWidth #middle{
+        width:35px;
+        height:0;
+        border-top:8px solid #333;
+    }
+    .lineWidth #thin{
+        width:35px;
+        height:0;
+        border-top:4px solid #333;
+    }
 }
-.lineWidth #middle{
-    width:35px;
-    height:0;
-    border-top:8px solid #333;
-}
-.lineWidth #thin{
-    width:35px;
-    height:0;
-    border-top:4px solid #333;
-}
+
 .save{
     position: fixed;
     top:20px;
     right:50px;
-    background-color: pink;
+    background-color: #fafafa;
 }
 .save #save{
     width:26px;
